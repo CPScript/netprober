@@ -462,11 +462,11 @@ def parse_arguments():
     auth_group.add_argument("-L", "--login", 
                            help="Single username or username list file")
     
-    parser.add_argument("-P", "--pass-list", dest="password_list",
+    parser.add_argument("-S", "--pass-list", dest="password_list",
                        help="Single password or password list file (required with -L)")
     
     # Performance options
-    parser.add_argument("-t", "--tasks", dest="threads", type=int, default=16,
+    parser.add_argument("-T", "--tasks", dest="threads", type=int, default=16,
                        help="Number of parallel tasks")
     parser.add_argument("-w", "--wait", type=float, default=0,
                        help="Wait time between attempts (seconds)")
@@ -483,12 +483,12 @@ def parse_arguments():
     parser.add_argument("-q", "--quiet", action="store_true",
                        help="Quiet mode (only show successful logins)")
     
-    # Fix argument parsing conflict
+    # Parse arguments
     args = parser.parse_args()
     
     # Validate arguments
     if hasattr(args, 'login') and args.login and not args.password_list:
-        parser.error("-L/--login requires -P/--pass-list")
+        parser.error("-L/--login requires -S/--pass-list")
     
     return args
 
@@ -606,7 +606,7 @@ async def main():
         if args.output:
             prober.save_results(args.output, args.format)
         
-        return 130
+        return 130  # Standard exit code for SIGINT
     
     except Exception as e:
         logging.error(f"Error: {e}")
@@ -617,6 +617,7 @@ async def main():
 
 
 if __name__ == "__main__":
+    # Handle asyncio event loop
     if sys.platform == 'win32':
         asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
     
