@@ -230,7 +230,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔗 Links
 
-- **Website**: [netprober.com](https://netprober.com)
+- **Website**: [cpscript.github.io/netprober](https://cpscript.github.io/netprober/)
 - **Issues**: [GitHub Issues](https://github.com/CPScript/netprober/issues)
 
 ---
