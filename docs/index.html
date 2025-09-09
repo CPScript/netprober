@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetProber - Enterprise Authentication Testing Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #0a0a0a;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #00ff88;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00ff88;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%2300ff8820" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: #ccc;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #00ff88;
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: #00cc6a;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+        }
+
+        .btn-secondary:hover {
+            background: #00ff88;
+            color: #000;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Features Grid */
+        .features {
+            background: #111;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ff88;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: #ccc;
+        }
+
+        /* Version Comparison */
+        .comparison {
+            background: #0a0a0a;
+        }
+
+        .comparison-table {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .comparison-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            background: rgba(0, 255, 136, 0.1);
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .comparison-header > div {
+            padding: 1.5rem;
+            text-align: center;
+            border-right: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .comparison-header > div:first-child {
+            text-align: left;
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-row > div {
+            padding: 1rem 1.5rem;
+            text-align: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+        }
+
+        .comparison-row > div:first-child {
+            text-align: left;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .check-icon {
+            color: #00ff88;
+        }
+
+        .cross-icon {
+            color: #ff4444;
+        }
+
+        .highlight {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        /* Pricing Cards */
+        .pricing {
+            background: #111;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .pricing-card.featured {
+            border-color: #00ff88;
+            transform: scale(1.05);
+            position: relative;
+        }
+
+        .pricing-card.featured::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00ff88;
+            color: #000;
+            padding: 0.5rem 2rem;
+            font-weight: bold;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .pricing-header {
+            padding: 2rem;
+            text-align: center;
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-header p {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        .price-period {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 2rem;
+        }
+
+        .pricing-features li {
+            padding: 0.5rem 0;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pricing-features .fas.fa-check {
+            color: #00ff88;
+        }
+
+        .contact-btn {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 90%;
+            margin: 0 auto 2rem;
+            display: block;
+        }
+
+        .contact-btn:hover {
+            background: #00cc6a;
+            transform: translateY(-2px);
+        }
+
+        .github-btn {
+            background: #333;
+            color: #fff;
+            border: 2px solid #666;
+        }
+
+        .github-btn:hover {
+            background: #555;
+            border-color: #00ff88;
+        }
+
+        /* Technical Specs */
+        .technical {
+            background: #0a0a0a;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .tech-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .tech-card h3 {
+            color: #00ff88;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tech-list {
+            list-style: none;
+        }
+
+        .tech-list li {
+            padding: 0.3rem 0;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tech-list .fas.fa-check {
+            color: #00ff88;
+        }
+
+        /* Contact Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid #00ff88;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #00ff88;
+        }
+
+        .modal h2 {
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .modal p {
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .email-link {
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .email-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            color: #ccc;
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid #333;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .comparison-header,
+            .comparison-row {
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+                font-size: 0.8rem;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">
+                <i class="fas fa-network-wired"></i> NetProber
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#comparison">Compare</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#technical">Technical</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>NetProber</h1>
+                <p>Revolutionary multi-protocol authentication testing framework with AI-powered password generation. From free community tools to enterprise-grade security testing solutions supporting 20+ protocols.</p>
+                <div class="cta-buttons">
+                    <a href="#pricing" class="btn btn-primary">
+                        <i class="fas fa-download"></i> View Pricing
+                    </a>
+                    <a href="#comparison" class="btn btn-secondary">
+                        <i class="fas fa-chart-bar"></i> Compare Versions
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-title animate-on-scroll">
+                <h2>Why Choose NetProber?</h2>
+                <p>The most comprehensive authentication testing platform with support for 20+ protocols and AI-enhanced capabilities</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3>20+ Protocol Support</h3>
+                    <p>Test authentication across SSH, RDP, VNC, HTTP, LDAP, MySQL, PostgreSQL, MongoDB, Redis, IMAP, POP3, SNMP, SMB, WinRM, IPMI, and more. Comprehensive coverage for enterprise environments.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Generation</h3>
+                    <p>Revolutionary Groq AI integration generates contextual passwords based on organizational data, increasing success rates by 3-5x over traditional wordlists.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Advanced I/O Formats</h3>
+                    <p>Support for Text, JSON, CSV, Parquet, Avro, Excel, XML, YAML, Protocol Buffers, and HDF5 for seamless data integration with enterprise workflows.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3>Enterprise Performance</h3>
+                    <p>Async architecture with 1000+ concurrent connections, adaptive throttling, circuit breakers, and intelligent rate limiting for large-scale assessments.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Professional Reporting</h3>
+                    <p>Professional HTML reports, Excel exports with multiple sheets, statistical analysis, and customizable dashboards for stakeholder presentations.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <h3>REST API Integration</h3>
+                    <p>Full REST API for CI/CD integration, remote management, session control, and enterprise workflow automation with comprehensive documentation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section id="comparison" class="comparison">
+        <div class="container">
+            <div class="section-title animate-on-scroll">
+                <h2>Version Comparison</h2>
+                <p>Choose the right NetProber version for your security testing needs</p>
+            </div>
+            <div class="comparison-table animate-on-scroll">
+                <div class="comparison-header">
+                    <div>Feature</div>
+                    <div>Free</div>
+                    <div>Professional</div>
+                    <div>Enterprise AI</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="feature-name">Protocol Support</div>
+                    <div>3 Protocols<br><small>(SSH, FTP, HTTP)</small></div>
+                    <div>9 Protocols<br><small>(+6 additional)</small></div>
+                    <div class="highlight">20+ Protocols<br><small>(Full suite)</small></div>
+                </div>
+                <div class="comparison-row">
+                    <div class="feature-name">Concurrent Connections</div>
+                    <div>16</div>
+                    <div>100</div>
+                    <div class="highlight">1000+</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="feature-name">AI Password Generation</div>
+                    <div><i class="fas fa-times cross-icon"></i></div>
+                    <div><i class="fas fa-times cross-icon"></i></div>
+                    <div class="highlight"><i class="fas fa-check check-icon"></i> Groq AI</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="feature-name">Output Formats</div>
+                    <div>Text only</div>
+                    <div>HTML, JSON, CSV</div>
+                    <div class="highlight">10+ Formats</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="feature-name">Database Persistence</div>
+                    <div><i class="fas fa-times cross-icon"></i></div>
+                    <div><i class="fas fa-check check-icon"></i></div>
+                    <div><i class="fas fa-check check-icon"></i></div>
+                </div>
+                <div class="comparison-row">
+                    <div class="feature-name">REST API</div>
+                    <div><i class="fas fa-times cross-icon"></i></div>
+                    <div><i class="fas fa-check check-icon"></i></div>
+                    <div><i class="fas fa-check check-icon"></i></div>
+                </div>
+                <div class="comparison-row">
+                    <div class="feature-name">Session Management</div>
+                    <div><i class="fas fa-times cross-icon"></i></div>
+                    <div><i class="fas fa-check check-icon"></i></div>
+                    <div><i class="fas fa-check check-icon"></i></div>
+                </div>
+                <div class="comparison-row">
+                    <div class="feature-name">Circuit Breakers</div>
+                    <div><i class="fas fa-times cross-icon"></i></div>
+                    <div><i class="fas fa-check check-icon"></i></div>
+                    <div><i class="fas fa-check check-icon"></i></div>
+                </div>
+                <div class="comparison-row">
+                    <div class="feature-name">Professional Support</div>
+                    <div>Community</div>
+                    <div>Email Support</div>
+                    <div class="highlight">24/7 Support</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="feature-name">License</div>
+                    <div>MIT (Open Source)</div>
+                    <div>Commercial</div>
+                    <div>Enterprise</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-title animate-on-scroll">
+                <h2>Choose Your Plan</h2>
+                <p>From open source to enterprise AI - we have the right solution for your security testing needs</p>
+            </div>
+            <div class="pricing-grid">
+                <!-- Free Version -->
+                <div class="pricing-card animate-on-scroll">
+                    <div class="pricing-header">
+                        <h3>NetProber Free</h3>
+                        <p>Perfect for students, researchers, and individual security professionals</p>
+                        <div class="price">Free</div>
+                        <div class="price-period">Open Source</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 3 Protocol Support (SSH, FTP, HTTP)</li>
+                        <li><i class="fas fa-check"></i> 16 Concurrent Connections</li>
+                        <li><i class="fas fa-check"></i> Basic Text Output</li>
+                        <li><i class="fas fa-check"></i> MIT License</li>
+                        <li><i class="fas fa-check"></i> Community Support</li>
+                        <li><i class="fas fa-check"></i> Educational Use</li>
+                    </ul>
+                    <a href="https://github.com/CPScript/netprober" class="contact-btn github-btn" target="_blank">
+                        <i class="fab fa-github"></i> Download from GitHub
+                    </a>
+                </div>
+
+                <!-- Professional Version -->
+                <div class="pricing-card featured animate-on-scroll">
+                    <div class="pricing-header">
+                        <h3>NetProber Professional</h3>
+                        <p>Advanced features for security consultancies and corporate teams</p>
+                        <div class="price">$299</div>
+                        <div class="price-period">per user/year</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Everything from Free +</li>
+                        <li><i class="fas fa-check"></i> 9 Total Protocols (6 additional)</li>
+                        <li><i class="fas fa-check"></i> 100 Concurrent Connections</li>
+                        <li><i class="fas fa-check"></i> Database Persistence</li>
+                        <li><i class="fas fa-check"></i> REST API Access</li>
+                        <li><i class="fas fa-check"></i> HTML/JSON/CSV Reports</li>
+                        <li><i class="fas fa-check"></i> Session Management</li>
+                        <li><i class="fas fa-check"></i> Circuit Breakers</li>
+                        <li><i class="fas fa-check"></i> Email Support</li>
+                    </ul>
+                    <button class="contact-btn" onclick="openContactModal('professional')">
+                        <i class="fas fa-envelope"></i> Contact Sales Team
+                    </button>
+                </div>
+
+                <!-- Enterprise AI Version -->
+                <div class="pricing-card animate-on-scroll">
+                    <div class="pricing-header">
+                        <h3>NetProber Enterprise AI</h3>
+                        <p>AI-powered authentication testing with enterprise features</p>
+                        <div class="price">Custom</div>
+                        <div class="price-period">Enterprise Pricing</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Everything from Professional +</li>
+                        <li><i class="fas fa-check"></i> 20+ Protocol Support</li>
+                        <li><i class="fas fa-check"></i> 1000+ Concurrent Connections</li>
+                        <li><i class="fas fa-check"></i> Groq AI Password Generation</li>
+                        <li><i class="fas fa-check"></i> 10+ Advanced Output Formats</li>
+                        <li><i class="fas fa-check"></i> Enterprise Dashboard</li>
+                        <li><i class="fas fa-check"></i> Advanced Analytics</li>
+                        <li><i class="fas fa-check"></i> 24/7 Priority Support</li>
+                        <li><i class="fas fa-check"></i> Custom Integrations</li>
+                    </ul>
+                    <button class="contact-btn" onclick="openContactModal('enterprise')">
+                        <i class="fas fa-handshake"></i> Contact Sales Team
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Specifications -->
+    <section id="technical" class="technical">
+        <div class="container">
+            <div class="section-title animate-on-scroll">
+                <h2>Technical Specifications</h2>
+                <p>Detailed technical capabilities and system requirements for NetProber</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-card animate-on-scroll">
+                    <h3><i class="fas fa-network-wired"></i> Supported Protocols</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-check"></i> SSH (Secure Shell)</li>
+                        <li><i class="fas fa-check"></i> FTP/FTPS (File Transfer)</li>
+                        <li><i class="fas fa-check"></i> HTTP/HTTPS Basic Auth</li>
+                        <li><i class="fas fa-check"></i> LDAP/LDAPS</li>
+                        <li><i class="fas fa-check"></i> RDP (Remote Desktop)</li>
+                        <li><i class="fas fa-check"></i> VNC (Virtual Network Computing)</li>
+                        <li><i class="fas fa-check"></i> Telnet</li>
+                        <li><i class="fas fa-check"></i> SNMP v1/v2c/v3</li>
+                        <li><i class="fas fa-check"></i> SMB/CIFS</li>
+                        <li><i class="fas fa-check"></i> WinRM</li>
+                        <li><i class="fas fa-check"></i> IPMI</li>
+                        <li><i class="fas fa-check"></i> MySQL/MariaDB</li>
+                        <li><i class="fas fa-check"></i> PostgreSQL</li>
+                        <li><i class="fas fa-check"></i> MongoDB</li>
+                        <li><i class="fas fa-check"></i> Redis</li>
+                        <li><i class="fas fa-check"></i> IMAP/IMAPS</li>
+                        <li><i class="fas fa-check"></i> POP3/POP3S</li>
+                    </ul>
+                </div>
+                <div class="tech-card animate-on-scroll">
+                    <h3><i class="fas fa-file-code"></i> Output Formats</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-check"></i> Plain Text</li>
+                        <li><i class="fas fa-check"></i> JSON</li>
+                        <li><i class="fas fa-check"></i> CSV</li>
+                        <li><i class="fas fa-check"></i> HTML Reports</li>
+                        <li><i class="fas fa-check"></i> Excel (XLSX)</li>
+                        <li><i class="fas fa-check"></i> Parquet</li>
+                        <li><i class="fas fa-check"></i> Apache Avro</li>
+                        <li><i class="fas fa-check"></i> XML</li>
+                        <li><i class="fas fa-check"></i> YAML</li>
+                        <li><i class="fas fa-check"></i> Protocol Buffers</li>
+                        <li><i class="fas fa-check"></i> HDF5</li>
+                    </ul>
+                </div>
+                <div class="tech-card animate-on-scroll">
+                    <h3><i class="fas fa-brain"></i> AI Features</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-check"></i> Groq AI Integration</li>
+                        <li><i class="fas fa-check"></i> Contextual Password Generation</li>
+                        <li><i class="fas fa-check"></i> Organization-specific Patterns</li>
+                        <li><i class="fas fa-check"></i> Adaptive Learning</li>
+                        <li><i class="fas fa-check"></i> Success Rate Enhancement</li>
+                        <li><i class="fas fa-check"></i> Custom Context Loading</li>
+                    </ul>
+                </div>
+                <div class="tech-card animate-on-scroll">
+                    <h3><i class="fas fa-server"></i> System Requirements</h3>
+                    <ul class="tech-list">
+                        <li><i class="fas fa-check"></i> Python 3.8+</li>
+                        <li><i class="fas fa-check"></i> Linux/Windows/macOS</li>
+                        <li><i class="fas fa-check"></i> 4GB RAM minimum</li>
+                        <li><i class="fas fa-check"></i> 1GB Storage space</li>
+                        <li><i class="fas fa-check"></i> Network connectivity</li>
+                        <li><i class="fas fa-check"></i> Optional: GPU for AI features</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeContactModal()">&times;</span>
+            <h2>Contact Sales Team</h2>
+            <p>Ready to enhance your security testing capabilities with NetProber? Our sales team is here to help you choose the right solution for your organization.</p>
+            
+            <div style="margin: 2rem 0;">
+                <p><strong>For all inquiries, please contact:</strong></p>
+                <a href="mailto:trust.frameworks@gmail.com" class="email-link">
+                    <i class="fas fa-envelope"></i> trust.frameworks@gmail.com
+                </a>
+            </div>
+            
+            <p><strong>Include in your email:</strong></p>
+            <ul style="color: #ccc; margin-left: 1rem;">
+                <li>Your organization name</li>
+                <li>Desired NetProber version</li>
+                <li>Number of users</li>
+                <li>Specific requirements</li>
+                <li>Preferred contact method</li>
+            </ul>
+            
+            <p style="margin-top: 2rem; font-size: 0.9rem; color: #888;">
+                Response time: Within 24 hours for all inquiries
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <p>&copy; 2024 NetProber. Professional authentication testing platform. Use responsibly and legally for authorized security assessments only.</p>
+            <p style="margin-top: 1rem;">
+                <a href="mailto:trust.frameworks@gmail.com" style="color: #00ff88; text-decoration: none;">
+                    <i class="fas fa-envelope"></i> trust.frameworks@gmail.com
+                </a>
+                |
+                <a href="https://github.com/CPScript/netprober" style="color: #00ff88; text-decoration: none;" target="_blank">
+                    <i class="fab fa-github"></i> Open Source Version
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Contact Modal Functions
+        function openContactModal(version) {
+            const modal = document.getElementById('contactModal');
+            modal.style.display = 'block';
+        }
+
+        function closeContactModal() {
+            const modal = document.getElementById('contactModal');
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('contactModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animatable elements
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(el);
+        });
+      /* Another banger site cooked up by yours truely */
+    </script>
+</body>
+</html>
