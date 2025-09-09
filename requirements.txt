@@ -1,0 +1,75 @@
+# NetProber Free - Requirements
+# Multi-protocol authentication testing for SSH, FTP, and HTTP
+# Python 3.8+ required
+
+# ============================================================================
+# CORE PROTOCOL SUPPORT
+# ============================================================================
+
+# HTTP/HTTPS authentication support - async HTTP client for Basic Auth testing
+aiohttp>=3.8.0,<4.0.0
+
+# SSH authentication support - async SSH library for secure shell testing
+asyncssh>=2.13.0,<3.0.0
+
+# Async FTP support - async FTP client for file transfer protocol testing
+aioftp>=0.21.0,<1.0.0
+
+# ============================================================================
+# CRYPTOGRAPHY AND SECURITY
+# ============================================================================
+
+# SSL/TLS support and cryptographic operations
+cryptography>=3.4.8,<42.0.0
+
+# ============================================================================
+# USER INTERFACE AND OUTPUT
+# ============================================================================
+
+# Enhanced terminal output with colors (cross-platform)
+colorama>=0.4.6,<1.0.0
+
+# Progress bars and status display for long-running operations
+tqdm>=4.64.0,<5.0.0
+
+# ============================================================================
+# UTILITIES AND COMPATIBILITY
+# ============================================================================
+
+# HTTP requests library (fallback for synchronous operations)
+requests>=2.28.0,<3.0.0
+
+# ============================================================================
+# DEVELOPMENT AND TESTING (Optional - for contributors)
+# ============================================================================
+
+# Uncomment for development:
+# pytest>=7.0.0,<8.0.0              # Unit testing framework
+# pytest-asyncio>=0.21.0,<1.0.0     # Async testing support
+# black>=22.0.0,<24.0.0              # Code formatting
+# flake8>=5.0.0,<7.0.0               # Linting
+# mypy>=1.0.0,<2.0.0                 # Type checking
+
+# ============================================================================
+# INSTALLATION NOTES
+# ============================================================================
+#
+# Install with: pip install -r requirements.txt
+#
+# For development: pip install -r requirements.txt pytest pytest-asyncio black flake8 mypy
+#
+# Minimum Python version: 3.8
+# Recommended Python version: 3.11+
+#
+# Upgrade NetProber Professional features:
+# - Database persistence (SQLAlchemy)
+# - REST API (FastAPI)
+# - Advanced reporting (Jinja2)
+# - Additional protocols (LDAP, RDP, VNC, etc.)
+#
+# Upgrade NetProber Enterprise AI features:
+# - AI password generation (Groq)
+# - Advanced analytics
+# - Enterprise integrations
+#
+# Contact: sales@netprober.com
