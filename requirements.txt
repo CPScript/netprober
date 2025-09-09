@@ -71,5 +71,3 @@ requests>=2.28.0,<3.0.0
 # - AI password generation (Groq)
 # - Advanced analytics
 # - Enterprise integrations
-#
-# Contact: sales@netprober.com
